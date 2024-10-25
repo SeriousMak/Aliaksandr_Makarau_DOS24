@@ -1,14 +1,11 @@
 #!/bin/bash
 
-# Проверка на количество параметров
-if [ "$#" -ne 2 ]; then
-    echo "Использование: $0 имя_файла новое_расширение"
-    exit 1
-fi
-
 # Получение параметров
 file_name="$1"
-new_extension="$2"
+new_ext="$2"
 
 # Извлечение имени файла без расширения и новое имя
-new_file_name="${file_name%.*}.${new_extension}" 
+new_file_name="${file_name%.*}.${new_ext}"
+
+mv "$file_name" "$new_file_name"
+echo "Файл переименован в: $new_file_name"
