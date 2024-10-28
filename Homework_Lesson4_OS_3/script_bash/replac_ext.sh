@@ -13,5 +13,7 @@ echo $new_ext
 # Извлечение имени файла без расширения и новое имя
 new_file_name="${file_name%.*}.${new_ext}"
 
-mv "$file_name" "$new_file_name"
-echo "Файл переименован в: $new_file_name"
+# Командой cp оставляем старое название файла
+
+cp "$file_name" "$new_file_name"
+echo "Файл переименован в: $new_file_name и старое расширение файла, также сохранилось $file_name"
