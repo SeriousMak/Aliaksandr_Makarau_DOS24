@@ -17,3 +17,4 @@ new_file_name="${file_name%.*}.${new_ext}"
 
 cp "$file_name" "$new_file_name"
 echo "Файл переименован в: $new_file_name и старое расширение файла, также сохранилось $file_name"
+
