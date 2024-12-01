@@ -16,6 +16,12 @@ outputfile=$1
 catalog=$2
 extantion=$3
 
+# Проверка, существует ли данный каталог
+if [ ! -d $catalog]; then
+    echo 'Ошибка: Данный каталог '$catalog' не существует'
+    exit 1
+fi
+
 # Поиск файлов с заданным расширением и вывод его в outputfile
-find $catalog -type f -name $extantion > $outputfile
+find $catalog -type f -name *$extantion > $outputfile
 
