@@ -8,13 +8,13 @@ echo $outputfile
 read -p "Введите имя каталога:" catalog
 echo $catalog
 
-read -p "Введите расширение файлов, которое вам необходимо:" extantion
-echo $extantion 
+read -p "Введите расширение файлов, которое вам необходимо:" extansion
+echo $extansion 
 
 # Переменные
 outputfile=$1
 catalog=$2
-extantion=$3
+extansion=$3
 
 # Проверка, существует ли данный каталог
 if [ ! -d $catalog]; then
@@ -22,6 +22,6 @@ if [ ! -d $catalog]; then
     exit 1
 fi
 
-# Поиск файлов с заданным расширением и вывод его в outputfile
-find $catalog -type f -name *$extantion > $outputfile
+# Поиск файлов в заданном каталоге, с заданным расширением и вывод его в outputfile
+find $catalog -type f -name *$extansion > $outputfile
 
