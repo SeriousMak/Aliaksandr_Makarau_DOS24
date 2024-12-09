@@ -18,4 +18,7 @@ if [ ! -d "$catalog" ]; then
     exit 1
 fi
 
-grep -r "$search_string" "$catalog"
+grep -rl --include=\* "$search_string" "$catalog" | while read -r file; do 
+size=$(stat -c%s "$file")
+echo "Найдена строка в: $file (Размер: $size байт)"
+done
