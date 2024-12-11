@@ -4,7 +4,7 @@
 ./gen_server.sh
 
 get_status_ip() {
-    array=($1 $2)  
+    array=($*)  
     #echo "${array[@]}"
     for status in ${array[@]}; do
         case $status in
@@ -32,4 +32,4 @@ get_status_ip() {
 
 #Вызов функции
 
-get_status_ip $1 $2
+get_status_ip $*
