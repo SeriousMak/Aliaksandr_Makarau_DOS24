@@ -2,9 +2,9 @@
 
 # Функция для запроса погоды
 get_weather() {
-    local city=$1
-    local api_key="735bcdfdf9e553cad3a5bb2f7edec954" 
-    local url="https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}&units=metric"
+    city=$1
+    api_key="735bcdfdf9e553cad3a5bb2f7edec954" 
+    url="https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}&units=metric&lang=ru"
 
     # Выполняем запрос к API
     response=$(curl -s $url)
@@ -21,14 +21,26 @@ get_weather() {
 
 # Функция для отображения данных
 display_weather() {
-    local weather_data=$1
+    weather_data=$1
 
-    local city=$(echo $weather_data | jq -r '.name')
-    local country=$(echo $weather_data | jq -r '.sys.country')
-    local temperature=$(echo $weather_data | jq -r '.main.temp')
-    local description=$(echo $weather_data | jq -r '.weather[0].description')
+    country=$(echo $weather_data | jq -r '.sys.country')
+    city=$(echo $weather_data | jq -r '.name')
+    temperature=$(echo $weather_data | jq -r '.main.temp')
+    min_temp=$(echo $weather_data | jq -r '.main.temp_min')
+    max_temp=$(echo $weather_data | jq -r '.main.temp_max')
+    pressure=$(echo $weather_data | jq -r '.main.pressure')
+    humidity=$(echo $weather_data | jq -r '.main.humidity')
+    description=$(echo $weather_data | jq -r '.weather[0].description')
+    wind=$(echo $weather_data | jq -r '.wind.speed')
 
-    echo -e "Погода в ${city}, ${country}:\nТемпература: ${temperature}°C\nОписание: ${description}"
+    echo "Погода в $city, $country"
+    echo "Температура: $temperature°C"
+    echo "Минимальная температура: $min_temp°C"
+    echo "Максимальная температура: $max_temp°C"
+    echo "Давление: $pressure гПа"
+    echo "Влажность: $humidity %"
+    echo "Описание: $description"
+    echo "Скорость ветра: $wind м/с"
 }
 
 # Проверяем наличие аргумента
