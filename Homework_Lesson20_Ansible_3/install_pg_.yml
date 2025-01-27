@@ -1,0 +1,92 @@
+---
+- name: Install PostgreSQL and create DB, db_user
+  hosts: servers
+  become: yes
+  vars_files:
+  - vars.yml
+
+  pre_tasks:
+    - name: Install PostgreSQL
+      ansible.builtin.apt:
+        name: postgresql
+        state: latest
+        update_cache: true
+
+    - name: Install Python packages
+      apt:
+        name: python3-psycopg2
+        state: present
+
+    - name: Change file /etc/postgresql/14/main/pg_hba.conf
+      become: yes
+      become_user: postgres
+      shell: sed -i 's/peer/trust/; s/scram-sha-256/trust/; s/scram-sha-256/trust/' /etc/postgresql/14/main/pg_hba.conf
+
+    - name: Change port to file /etc/postgresql/14/main/postgresql.conf
+      become: yes
+      become_user: postgres
+      lineinfile:
+        path: /etc/postgresql/14/main/postgresql.conf
+        regexp: '^#?port ='
+        line: 'port = {{ db_port }}'
+      notify:
+          - Restart PostgreSQL
+
+
+
+#    - name: Change listen port 5434 to db
+#      become: yes
+#      become_user: postgres
+#      postgresql_set:
+#        name: port
+#        value: "{{ db_port }}"
+#      notify:
+#          - Restart PostgreSQL
+
+  handlers:
+    - name: Restart PostgreSQL
+      become: true
+      systemd:
+        name: postgresql
+        state: restarted
+
+  tasks:
+    - name: Start and enable services
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
+
+    - name: Create database
+      postgresql_db:
+        state: present
+        port: "{{ db_port }}"
+        name: "{{ db_name }}"
+      become: yes
+      become_user: postgres
+
+    - name: Create db user
+      postgresql_user:
+        state: present
+        port: "{{ db_port }}"
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+      become: yes
+      become_user: postgres
+
+    - name: Grant user db_user to db
+      postgresql_privs:
+        type: database
+        port: "{{ db_port }}"
+        database: "{{ db_name }}"
+        roles: "{{ db_user }}"
+        grant_option: no
+        privs: all
+      become: yes
+      become_user: postgres
+
+    - name: Add data to our db
+      become: true
+      become_user: postgres
+      shell: "psql -d {{ db_name }} -f /ALL_FILES/CREATE_TABLE_ANSIBLE.sql"
+

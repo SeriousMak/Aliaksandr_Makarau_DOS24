@@ -1,0 +1,10 @@
+---
+- name: Install PostgreSQL, configure and create db
+  hosts: servers
+  become: yes
+
+
+  roles:
+     - { role: deploy_postgresql, when: ansible_system == 'Linux' }
+
+
