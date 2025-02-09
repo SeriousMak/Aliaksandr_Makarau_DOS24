@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: tms
+
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./tms.conf:/etc/nginx/conf.d/tms.conf
+      - ./tms_man.html:/usr/share/nginx/html/tms_man.html
+#    command:
+#      /bin/sh -c "ln -s /etc/nginx/sites-available/tms.conf /etc/nginx/sites-enabled && nginx -g 'daemon off;'"
+    links:
+      - db
