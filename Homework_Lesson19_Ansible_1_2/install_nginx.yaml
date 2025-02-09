@@ -1,0 +1,15 @@
+- name: Install Nginx to VB VM
+  hosts: servers
+  become: yes
+  tasks:
+### Указываем установку Nginx  
+  - name: Innstall Nginx
+    apt:
+        name: nginx
+        state: present
+### Старт Nginx после установки
+  - name: Start and enabled Nginx
+    service:
+        name: nginx
+        state: started
+        enabled: yes
