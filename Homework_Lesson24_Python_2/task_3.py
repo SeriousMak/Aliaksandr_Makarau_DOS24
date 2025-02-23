@@ -1,4 +1,4 @@
-# Принимает на вход список файлов и находит те, которые встречаются в обеих строках
+# Скрипт принимает на вход список файлов и находит те, которые встречаются в обеих строках
 
 def find_files_with_sub(file_list, substring):
     matching_files = [file for file in file_list if substring in file]
