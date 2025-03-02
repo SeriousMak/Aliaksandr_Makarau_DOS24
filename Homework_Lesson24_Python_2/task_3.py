@@ -5,7 +5,7 @@ def find_files_with_sub(file_list, substring):
     return matching_files
 
 
-files = ['data_analysis.docx', 'summary.pdf', 'data_analysis.csv', 'final_report.docx']
+files = ['data_analysis.docx', 'summary.pdf', 'data_analysis.csv', 'report.docx']
 substring = 'data'
 found_files = find_files_with_sub(files, substring)
 
