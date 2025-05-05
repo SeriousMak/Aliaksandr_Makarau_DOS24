@@ -36,3 +36,10 @@ variable "bucket_name" {
 output "storage_bucket_name" {
   value = module.storage.bucket_name
 }
+
+resource "google_storage_bucket_object" "file" {
+  name   = "Hello_world_DOS24.txt"
+  bucket = module.storage.bucket_name
+  content_type = "text/plain"
+  source = "/home/makarov/my-test-project/Hello_world_DOS24.txt"
+}  
